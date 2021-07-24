@@ -57,6 +57,7 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
 void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]);
 void print2DArray(int arr[n][m], char name[500]);
+void print1DArray(int arr[], char name[500]);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -170,6 +171,13 @@ void print2DArray(int arr[n][m], char name[500]) {
             printf("%d ", arr[i][j]);
         }
         printf("\n");
+    }
+}
+
+void print1DArray(int arr[], char name[500]) {
+    printf("\nPrinting the %s variable:\n", name);
+    for(int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
     }
 }
 
