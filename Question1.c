@@ -52,7 +52,9 @@ void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]);
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n);
 void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n);
-void commandHandler();
+void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
+void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]);
+void print2DArray(int arr[n][m]);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -94,19 +96,35 @@ int main(int argc, char *argv[]) {
     }
 
     int allocation[n][m];
-    commandHandler();
+    int need[n][m];
+    int maxNeed[n][m];
+    memset(allocation, 0, sizeof(allocation[0][0]) * m * n);
+    // memset(need, 0, sizeof(need[0][0]) * m * n);
+    // memset(maxNeed, 0, sizeof(maxNeed[0][0]) * m * n);
+
+    constructMaxNeedMatrix(customerArr, maxNeed);
+
+    commandHandler(allocation, need, availableResources, maxNeed);
 
     int hello = 5;
 
 }
 
-void commandHandler() {
+void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            maxNeed[i][j] = customerArr[i].resources[j];
+        }
+    }
+}
+
+void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]) {
     struct CommandRequest commandInputRequest;
     // commandInputRequest.type = '';
     // int commandInputRequest[5] = {};
     // char input[200] = '';
 
-    while (strcmp(commandInputRequest.type,"-1") != 0) {
+    // while (strcmp(commandInputRequest.type,"-1") != 0) {
         printf("Enter Command: (or enter -1 to stop running)");
         scanf("s", commandInputRequest.type);
         // scanf("%s", input);
@@ -115,9 +133,21 @@ void commandHandler() {
         if (strcmp(commandInputRequest.type,"RQ") != 0 || strcmp(commandInputRequest.type, "RL")) {
             for(int i = 0; i < numResources + 1; i++){
                 scanf("%d", &commandInputRequest.customerAndResources[i]);
-
+                
             }
             printf("Handling RQ or RL command\n");
+
+            if (strcmp(commandInputRequest.type,"RQ") != 0) {
+                printf("Handling RQ command\n");
+                findNeed(maxNeed, allocation, need);
+            }
+
+            print2DArray(need);
+            
+
+            printf("hello33333");
+            
+
         } else if (strcmp(commandInputRequest.type,"*") != 0 ) {
             printf("Handling * command\n");
         } else if (strcmp(commandInputRequest.type,"Run") != 0 ) {
@@ -127,8 +157,17 @@ void commandHandler() {
         }
 
         
-    }
+    // }
    
+}
+
+void print2DArray(int arr[n][m]) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 //finding the need matrix
@@ -215,7 +254,7 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
 
     //
-
+    return 0;
 }
 
 
