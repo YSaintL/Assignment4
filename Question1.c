@@ -22,6 +22,12 @@ int numResources = 4;
 struct CustomerRequest {
     int resources[4];
 };
+
+struct CommandRequest {
+    char type[10];
+    int customerAndResources[5]; // index at 0 repreesnts the customer index and the following 4 values represent the resources
+};
+
 /* RQ - take a request
       - check if the request will result in a safe state
       - if safe = update the allocation of matrix to allocate resources
@@ -46,20 +52,26 @@ void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]);
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n);
 void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n);
+void commandHandler();
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
-    int numResources[argc-1];
-    for(int i = 0; i < argc-1; i++) {
-        numResources[i] = atoi(argv[i+1]); 
+    if (argc < 5) {
+        printf("Please enter the number of available resources for 4 resources in the form of 4 integers.\n");
+        return 0;
     }
 
-    if (numResources > 0) {
-        printf("Number of Customers: %d\n", *numResources);\
+    int availableResources[argc-1];
+    for(int i = 0; i < argc-1; i++) {
+        availableResources[i] = atoi(argv[i+1]); 
+    }
+    if (availableResources > 0) {
+        printf("Number of Customers: %lu\n", (sizeof(availableResources) / sizeof(int)));\
         printf("Currently Available resources: ");
-        for(int i = 0; i < *numResources; i++){
-            printf("%d ", numResources[i]);
+        for(int i = 0; i < (sizeof(availableResources) / sizeof(int)); i++){
+            printf("%d ", availableResources[i]);
         }
+        printf("\n");
     }
 
 
@@ -72,16 +84,51 @@ int main(int argc, char *argv[]) {
     printf("Maximum resources from file\n");
 
     for (int i = 0; i < customerCount; i++) {
-        for (int j = 0; j < *numResources; j++) {
+        for (int j = 0; j < (sizeof(availableResources) / sizeof(int)); j++) {
+            if (j > 0) {
+                printf(",");
+            }
             printf("%d", customerArr[i].resources[j]);
         }
         printf("\n");
     }
 
     int allocation[n][m];
+    commandHandler();
 
     int hello = 5;
 
+}
+
+void commandHandler() {
+    struct CommandRequest commandInputRequest;
+    // commandInputRequest.type = '';
+    // int commandInputRequest[5] = {};
+    // char input[200] = '';
+
+    while (strcmp(commandInputRequest.type,"-1") != 0) {
+        printf("Enter Command: (or enter -1 to stop running)");
+        scanf("s", commandInputRequest.type);
+        // scanf("%s", input);
+        // strcpy(commandInputRequest.type, input);
+
+        if (strcmp(commandInputRequest.type,"RQ") != 0 || strcmp(commandInputRequest.type, "RL")) {
+            for(int i = 0; i < numResources + 1; i++){
+                scanf("%d", &commandInputRequest.customerAndResources[i]);
+
+            }
+            printf("Handling RQ or RL command\n");
+        } else if (strcmp(commandInputRequest.type,"*") != 0 ) {
+            printf("Handling * command\n");
+        } else if (strcmp(commandInputRequest.type,"Run") != 0 ) {
+            printf("Handling Run command\n");
+        } else {
+            printf("Please enter a valid command.");
+        }
+
+        
+    }
+   
 }
 
 //finding the need matrix
@@ -250,7 +297,7 @@ int readFile(char* fileName, struct CustomerRequest customerArr[])//use this met
 		printf("Child A: Error in opening input file...exiting with error code -1\n");
 		return -1;
 	}
-	printf("%s\n", fileName);
+	// printf("%s\n", fileName);
 
 	struct stat st;
 	fstat(fileno(in), &st);
@@ -331,7 +378,7 @@ int readFile(char* fileName, struct CustomerRequest customerArr[])//use this met
             // printf("%s \n", arr[i]);
             currentCustomerRequest.resources[i] = atoi(arr[i]);
         }
-        printf("\n");
+        // printf("\n");
 
 		// memcpy(currentCustomerRequest.tid, arr[0], 8); // 8 is the size of the arr[0] (a char pointer)
 	
