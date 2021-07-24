@@ -52,7 +52,7 @@ int m = 4;
 int readFile(char* fileName, struct CustomerRequest customerArr[]);
 void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]);
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
-void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n);
+void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m + 1]);
 void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n);
 void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
 void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]);
@@ -143,6 +143,9 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             if (strcmp(commandInputRequest.type,"RQ") != 0) {
                 printf("Handling RQ command\n");
                 findNeed(maxNeed, allocation, need);
+                //sends to the request func
+                request(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
+                
             }
 
 
@@ -184,9 +187,9 @@ void print1DArray(int arr[], char name[500]) {
 //finding the need matrix
 void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
 
-    print2DArray(maxNeed, "maxNeed");
-    print2DArray(allocation, "allocation");
-    print2DArray(need, "need");
+    // print2DArray(maxNeed, "maxNeed");
+    // print2DArray(allocation, "allocation");
+    // print2DArray(need, "need");
 
     int x,y;
 
@@ -199,16 +202,24 @@ void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
         }
     }
 
-    print2DArray(maxNeed, "maxNeed");
-    print2DArray(allocation, "allocation");
-    print2DArray(need, "need");
+    // print2DArray(maxNeed, "maxNeed");
+    // print2DArray(allocation, "allocation");
+    // print2DArray(need, "need");
 
     printf("the Need Matrix has been created\n");
 }
 
-void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n){
+void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m + 1]){
 
     findNeed(maxNeed, allocation, need);
+
+    //before
+    printf("before");
+    print2DArray(maxNeed, "\nmaxNeed");
+    print2DArray(allocation, "\nallocation");
+    print2DArray(need, "\nneed");
+    print1DArray(available, "\navailable");
+    print1DArray(request, "\nrequest");
 
     int x;
     //for all resources in the vector
@@ -225,17 +236,33 @@ void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
                 need[request[0]][x] = need[request[0]][x] - request[x];
             }
             else{
-                printf("waiting");
+                printf("waiting 1 ");
             }
         }
         else{
-            printf("waiting");
+            printf("waiting 2 ");
         }
     }
+
+    //after
+    printf("\nafter");
+    print2DArray(maxNeed, "\nmaxNeed");
+    print2DArray(allocation, "\nallocation");
+    print2DArray(need, "\nneed");
+    print1DArray(available, "\navailable");
+    print1DArray(request, "\nrequest");
 
 
     //safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
     safetyAlg(available,allocation,maxNeed,need);
+
+    //after safetyAlg
+    printf("\nafter safeAlg");
+    print2DArray(maxNeed, "\nmaxNeed");
+    print2DArray(allocation, "\nallocation");
+    print2DArray(need, "\nneed");
+    print1DArray(available, "\navailable");
+    print1DArray(request, "\nrequest");
 
     if(true){
 
