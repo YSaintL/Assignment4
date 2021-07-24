@@ -40,10 +40,26 @@ int n = 5;
 
 int m = 4;
 
-//int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 
 
-// /*int newAvailable(int available[m], int allocation[n][m]){
+// //find the need matrix
+// int findNeed(int maxNeed[n][m], int allocation[n][m]){
+
+//     int x,y;
+
+//     for(x=0; x < n; x++){
+        
+//         for(y=0; y < m; y++){
+
+//             need[n][m] = maxNeed[n][m] - allocation[n][m];
+//             //printf("need")
+//         }
+//     }
+//     printf("the Need Matrix has been created");
+//     return need[n][m];
+// }
+
+// int newAvailable(int available[m], int allocation[n][m]){
 
 //     int x,y;
 
@@ -72,11 +88,30 @@ int main(int argc, char *argv[]) {
         numResources[i] = atoi(argv[i+1]); 
     }
 
+    if (numResources > 0) {
+        printf("Number of Customers: %d\n", *numResources);\
+        printf("Currently Available resources: ");
+        for(int i = 0; i < *numResources; i++){
+            printf("%d ", numResources[i]);
+        }
+    }
+
+
     struct CustomerRequest customerArr[5] = {};
     char fileName[14] = "sample4_in.txt";
     char* fileNamePtr = fileName;
 
-    readFile(fileNamePtr, customerArr);
+    int customerCount = readFile(fileNamePtr, customerArr);
+
+    printf("Maximum resources from file\n");
+
+    for (int i = 0; i < customerCount; i++) {
+        for (int j = 0; j < *numResources; j++) {
+            printf("%d", customerArr[i].resources[j]);
+        }
+        printf("\n");
+    }
+
     
 
     int hello = 5;
