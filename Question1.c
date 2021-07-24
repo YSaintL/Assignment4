@@ -5,6 +5,8 @@
  Email:   Fase0640@mylaurier.ca and doxx1080@mylaurier.ca
  ----------------------------------
  */
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -184,7 +186,7 @@ void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
         
         for(y=0; y < m; y++){
 
-            need[n][m] = maxNeed[n][m] - allocation[n][m];
+            need[x][y] = maxNeed[x][y] - allocation[x][y];
             //printf("need")
         }
     }
