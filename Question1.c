@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 //#include <time.h>
 //#include <sys/types.h>
-//#include <stdbool.h>
+#include <stdbool.h>
 
 
 int numResources = 4;
@@ -40,44 +40,28 @@ int n = 5;
 
 int m = 4;
 
+//int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 
 
-//find the need matrix
-int findNeed(int maxNeed[n][m], int allocation[n][m]){
+// /*int newAvailable(int available[m], int allocation[n][m]){
 
-    int x,y;
+//     int x,y;
 
-    for(x=0; x < n; x++){
-        
-        for(y=0; y < m; y++){
+// }
 
-            need[n][m] = maxNeed[n][m] - allocation[n][m];
-            //printf("need")
-        }
-    }
-    printf("the Need Matrix has been created");
-    return need[n][m];
-}
+// int initAvailable(int available[m]){
 
-int newAvailable(int available[m], int allocation[n][m]){
+//     int x,y,z;
 
-    int x,y;
+//     printf("please enter available");
 
-}
-
-int initAvailable(int available[m]){
-
-    int x,y,z;
-
-    printf("please enter available");
-
-    for (x = 0; x < m; x++)
-    {
-        scanf("%d", &z);
-        available[x] = z;
-    }
-    return available[m];
-}
+//     for (x = 0; x < m; x++)
+//     {
+//         scanf("%d", &z);
+//         available[x] = z;
+//     }
+//     return available[m];
+// }
 
 int readFile(char* fileName, struct CustomerRequest customerArr[]);
 
@@ -96,6 +80,84 @@ int main(int argc, char *argv[]) {
     
 
     int hello = 5;
+
+}
+
+//finding the need matrix
+int findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
+
+    int x,y;
+
+    for(x=0; x < n; x++){
+        
+        for(y=0; y < m; y++){
+
+            need[n][m] = maxNeed[n][m] - allocation[n][m];
+            //printf("need")
+        }
+    }
+    printf("the Need Matrix has been created");
+    return need[n][m];
+}
+
+
+//checking to see if the sequence is safe
+int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
+
+    need[n][m] = findNeed(maxNeed, allocation, need);
+
+    int x,y,count,flag, processFlag;
+
+    int work[m];
+
+    bool isSafe = false;
+
+    int finish[n];
+
+    for(x = 0; x < n; x++){
+        finish[x] = 0;
+    }
+
+    for(x = 0; x < m; x++){
+        work[x] = available[x];
+    }
+
+    count = 0;
+    while(count < n){
+        
+        for(x = 0; x < n; x++){
+
+            if(finish[x] == 0){
+
+                flag = 0;
+
+                for(y = 0; y < n; y++){
+
+                    if(need[x][y] > work[y]){
+                        flag = 1;
+                    }
+                }
+
+                if((finish[x] == 0) && (flag == 0)){
+
+                    for(y = 0; y < n; y++){
+                        work[y] += allocation[x][y];
+                    }
+                    
+                    finish[x] = 1;
+                    processFlag++;
+                    count++;
+
+                }
+            }
+        }
+
+        if(processFlag == n){
+            isSafe = true;
+        }
+
+        return isSafe;
+    }
 }
 
 
