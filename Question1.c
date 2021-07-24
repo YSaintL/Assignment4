@@ -54,7 +54,7 @@ void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n);
 void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
 void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]);
-void print2DArray(int arr[n][m]);
+void print2DArray(int arr[n][m], char name[500]);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -99,8 +99,8 @@ int main(int argc, char *argv[]) {
     int need[n][m];
     int maxNeed[n][m];
     memset(allocation, 0, sizeof(allocation[0][0]) * m * n);
-    // memset(need, 0, sizeof(need[0][0]) * m * n);
-    // memset(maxNeed, 0, sizeof(maxNeed[0][0]) * m * n);
+    memset(need, 0, sizeof(need[0][0]) * m * n);
+    memset(maxNeed, 0, sizeof(maxNeed[0][0]) * m * n);
 
     constructMaxNeedMatrix(customerArr, maxNeed);
 
@@ -142,7 +142,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
                 findNeed(maxNeed, allocation, need);
             }
 
-            print2DArray(need);
+
             
 
             printf("hello33333");
@@ -161,7 +161,8 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
    
 }
 
-void print2DArray(int arr[n][m]) {
+void print2DArray(int arr[n][m], char name[500]) {
+    printf("\nPrinting the %s variable:\n", name);
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
             printf("%d ", arr[i][j]);
@@ -173,6 +174,10 @@ void print2DArray(int arr[n][m]) {
 //finding the need matrix
 void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
 
+    print2DArray(maxNeed, "maxNeed");
+    print2DArray(allocation, "allocation");
+    print2DArray(need, "need");
+
     int x,y;
 
     for(x=0; x < n; x++){
@@ -183,7 +188,12 @@ void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
             //printf("need")
         }
     }
-    printf("the Need Matrix has been created");
+
+    print2DArray(maxNeed, "maxNeed");
+    print2DArray(allocation, "allocation");
+    print2DArray(need, "need");
+
+    printf("the Need Matrix has been created\n");
 }
 
 void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n){
