@@ -27,7 +27,7 @@ struct CustomerRequest {
       - if safe = update the allocation of matrix to allocate resources
       - if not safe = reject allocation
 
-   RL - if the value of the user inputted release of the specific thread (if T1 = unput)
+   RL - if the value of the user inputted release of the specific thread (if T1 = input)
        then subtract the input from that thread.
       - if the inputted value does not equal the thread then reject it
 
@@ -41,45 +41,11 @@ int n = 5;
 int m = 4;
 
 
-
-// //find the need matrix
-// int findNeed(int maxNeed[n][m], int allocation[n][m]){
-
-//     int x,y;
-
-//     for(x=0; x < n; x++){
-        
-//         for(y=0; y < m; y++){
-
-//             need[n][m] = maxNeed[n][m] - allocation[n][m];
-//             //printf("need")
-//         }
-//     }
-//     printf("the Need Matrix has been created");
-//     return need[n][m];
-// }
-
-// int newAvailable(int available[m], int allocation[n][m]){
-
-//     int x,y;
-
-// }
-
-// int initAvailable(int available[m]){
-
-//     int x,y,z;
-
-//     printf("please enter available");
-
-//     for (x = 0; x < m; x++)
-//     {
-//         scanf("%d", &z);
-//         available[x] = z;
-//     }
-//     return available[m];
-// }
-
 int readFile(char* fileName, struct CustomerRequest customerArr[]);
+void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]);
+int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
+void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n);
+void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -112,14 +78,14 @@ int main(int argc, char *argv[]) {
         printf("\n");
     }
 
-    
+    int allocation[n][m];
 
     int hello = 5;
 
 }
 
 //finding the need matrix
-int findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
+void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
 
     int x,y;
 
@@ -132,18 +98,94 @@ int findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]){
         }
     }
     printf("the Need Matrix has been created");
-    return need[n][m];
+}
+
+void Request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m], int m, int n){
+
+    findNeed(maxNeed, allocation, need);
+
+    int x;
+    //for all resources in the vector
+    for(x=0; x < m; x++){
+        //if requesti <= needi
+        if(request[x + 1] <= need[request[0]][x]){  
+            //if requesti <= availblei
+            if(request[x + 1] <= available[x]){
+                //available = available - request
+                available[x] = available[x] - request[x];
+                //allocationi = allocationi + requesti
+                allocation[request[0]][x] = allocation[request[0]][x] + request[x];
+                //needi = needi - requesti
+                need[request[0]][x] = need[request[0]][x] - request[x];
+            }
+            else{
+                printf("waiting");
+            }
+        }
+        else{
+            printf("waiting");
+        }
+    }
+
+
+    //safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
+    safetyAlg(available,allocation,maxNeed,need);
+
+    if(true){
+
+        printf("the Resources are safe!");
+
+    }
+    else{
+
+        printf("the Resources are NOT safe!");
+
+        available[x] = available[x] + request[x];
+                //allocationi = allocationi + requesti
+        allocation[request[0]][x] = allocation[request[0]][x] - request[x];
+                //needi = needi - requesti
+        need[request[0]][x] = need[request[0]][x] + request[x];
+    }
+}
+
+void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n){
+
+    int x;
+
+    for(x=0; x < m; x++){
+
+        if(realease[x + 1] == allocation[realease[0]][x]){
+            
+            allocation[realease[0]][x] -= allocation[realease[0]][x];
+        }
+
+        else{
+            printf("could not be de-allocated");
+        }
+    }
+}
+
+int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
+
+    //
+
 }
 
 
 //checking to see if the sequence is safe
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
 
-    need[n][m] = findNeed(maxNeed, allocation, need);
+    findNeed(maxNeed, allocation, need);
 
     int x,y,count,flag, processFlag;
 
     int work[m];
+
+    // this is the safe sequence character array that adds th
+    /*char safeSeqChar[n];
+
+    // this is the safe sequence counter that will increminate for every exacuted process
+    int  safeSeqCount;*/
 
     bool isSafe = false;
 
@@ -177,6 +219,8 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 
                     for(y = 0; y < n; y++){
                         work[y] += allocation[x][y];
+                        printf("the safe sequence is [%d]", y);
+                        
                     }
                     
                     finish[x] = 1;
@@ -186,13 +230,15 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
                 }
             }
         }
-
-        if(processFlag == n){
-            isSafe = true;
-        }
-
-        return isSafe;
     }
+
+
+
+    if(processFlag == n){
+        isSafe = true;
+    }
+
+    return isSafe;
 }
 
 
