@@ -223,11 +223,11 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
     //before
     printf("before");
-    print2DArray(maxNeed, "\nmaxNeed");
-    print2DArray(allocation, "\nallocation");
-    print2DArray(need, "\nneed");
-    print1DArray(available, "\navailable");
-    print1DArray(request, "\nrequest");
+    print2DArray(maxNeed, "\nmaxNeed\n");
+    print2DArray(allocation, "\nallocation\n");
+    print2DArray(need, "\nneed\n");
+    print1DArray(available, "\navailable\n");
+    print1DArray(request, "\nrequest\n");
 
     int x;
     //for all resources in the vector
@@ -254,32 +254,33 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
     //after
     printf("\nafter");
-    print2DArray(maxNeed, "\nmaxNeed");
-    print2DArray(allocation, "\nallocation");
-    print2DArray(need, "\nneed");
-    print1DArray(available, "\navailable");
-    print1DArray(request, "\nrequest");
+    print2DArray(maxNeed, "\nmaxNeed\n");
+    print2DArray(allocation, "\nallocation\n");
+    print2DArray(need, "\nneed\n");
+    print1DArray(available, "\navailable\n");
+    print1DArray(request, "\nrequest\n");
+    printf("pree safety");
 
 
     //safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
     safetyAlg(available,allocation,maxNeed,need);
 
     //after safetyAlg
-    printf("\nafter safeAlg");
-    print2DArray(maxNeed, "\nmaxNeed");
-    print2DArray(allocation, "\nallocation");
-    print2DArray(need, "\nneed");
-    print1DArray(available, "\navailable");
-    print1DArray(request, "\nrequest");
+    printf("\nafter safeAlg\n");
+    print2DArray(maxNeed, "\nmaxNeed\n");
+    print2DArray(allocation, "\nallocation\n");
+    print2DArray(need, "\nneed\n");
+    print1DArray(available, "\navailable\n");
+    print1DArray(request, "\nrequest\n");
 
     if(true){
 
-        printf("the Resources are safe!");
+        printf("\nthe Resources are safe!\n");
 
     }
     else{
 
-        printf("the Resources are NOT safe!");
+        printf("\nthe Resources are NOT safe!\n");
 
         available[x] = available[x] + request[x+1];
                 //allocationi = allocationi + requesti
@@ -293,7 +294,7 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 
 
     //before
-    printf("before");
+    printf("\nbefore");
     print2DArray(maxNeed, "\nmaxNeed");
     print2DArray(allocation, "\nallocation");
     print2DArray(need, "\nneed");
@@ -335,14 +336,14 @@ int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
    
     int counter = n; // the amount of customers/processes
-    printf("counter is: %d", counter); 
+    printf("\n(339)counter is: %d\n", counter); 
     int safeFlag = 0; // 0 if safe, 1 if not safe
     int x,y,i,flag; //x,y,i just variables for the for loops below... flag is used to break lines 397 if there
                     // is a need > avaialble
     int finish[n]; //array of the processes
     bool isSafe;
 
-    findNeed(maxNeed, allocation, need); // finding the need matrix
+    //findNeed(maxNeed, allocation, need); // finding the need matrix
 
     for(x = 0; x < n; x++){
         finish[x] = 1; //setting all processes to false( or 1)
@@ -366,12 +367,12 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
                     }
                 }
                 if(flag){ // if available[y] > need[x][y]
-                    printf("\nProcess%d is executing\n", i + 1);
+                    printf("\n (370) Process%d is executing\n", i + 1);
 
-                    printf("\nfinish[x] is at %d\n", finish[x]);
+                    printf("\n (372 )finish[x] is at %d\n", finish[x]);
                     finish[x] = 0;
 
-                    printf("\ncounter is now at %d\n", counter);
+                    printf("\n (375) The counter is now at %d\n", counter);
                     counter--;
                     
                     safeFlag = 1; // the proces breaks here (435)
@@ -379,7 +380,7 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
                     for(y=0; y < m; y++){
 
                         available[y] += allocation[x][y]; //adds the allocation[x][y] to available vector
-                        printf("\navailable vector is now: [%d]", available[y]);
+                        printf("\n (383) The available vector is now: [%d]", available[y]);
                     }
                     break;
                 }
@@ -387,16 +388,17 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
         }
 
         if(!safeFlag){
-            printf("not in safe state");
+            printf("this sequence is not in safe state");
             isSafe = false;
             break;
         }
         else{
-            printf("safe state accomplished!");
-            printf("The current available vector is:");
+
+            printf("\nsafe state accomplished!\n");
+            printf("\nThe current available vector is:\n");
 
             for(i=0;i<m;i++){
-                printf("\t%d", available[m]);
+                printf("\t%d\n", available[m]);
             }
             printf("\n");
             isSafe = true;
