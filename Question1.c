@@ -125,17 +125,24 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     struct CommandRequest commandInputRequest;
     // commandInputRequest.type = '';
     // int commandInputRequest[5] = {};
-    // char input[200] = '';
+    char input[200];
+    int numInput = 0;
 
     // while (strcmp(commandInputRequest.type,"-1") != 0) {
         printf("Enter Command: (or enter -1 to stop running)");
-        scanf("s", commandInputRequest.type);
+        scanf("%s", commandInputRequest.type);
         // scanf("%s", input);
         // strcpy(commandInputRequest.type, input);
 
         if (strcmp(commandInputRequest.type,"RQ") != 0 || strcmp(commandInputRequest.type, "RL")) {
             for(int i = 0; i < numResources + 1; i++){
-                scanf("%d", &commandInputRequest.customerAndResources[i]);
+                // commandInputRequest.customerAndResources[i] = 0;
+                scanf("%s", input);
+                // scanf("%d", numInput);
+
+                // scanf("%s", input);
+                commandInputRequest.customerAndResources[i] = atoi(input);
+                // commandInputRequest.customerAndResources[i] = numInput;
                 
             }
             printf("Handling RQ or RL command\n");
