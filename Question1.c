@@ -128,13 +128,13 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     char input[200];
     int numInput = 0;
 
-    // while (strcmp(commandInputRequest.type,"-1") != 0) {
-        printf("Enter Command: (or enter -1 to stop running)");
+    while (strcmp(commandInputRequest.type,"-1") != 0) {
+        printf("\nEnter Command: (or enter -1 to stop running)");
         scanf("%s", commandInputRequest.type);
         // scanf("%s", input);
         // strcpy(commandInputRequest.type, input);
 
-        if (strcmp(commandInputRequest.type,"RQ") != 0 || strcmp(commandInputRequest.type, "RL")) {
+        if (strcmp(commandInputRequest.type,"RQ") == 0 || strcmp(commandInputRequest.type, "RL") == 0) {
             for(int i = 0; i < numResources + 1; i++){
                 // commandInputRequest.customerAndResources[i] = 0;
                 scanf("%s", input);
@@ -147,19 +147,13 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             }
             printf("Handling RQ or RL command\n");
 
-            if (strcmp(commandInputRequest.type,"RQ") != 0) {
+            if (strcmp(commandInputRequest.type,"RQ") == 0) {
                 printf("Handling RQ command\n");
                 findNeed(maxNeed, allocation, need);
                 //sends to the request func
                 request(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
                 
-            }
-
-
-            
-
-            printf("hello33333");
-            
+            }            
 
         } else if (strcmp(commandInputRequest.type,"*") != 0 ) {
             printf("Handling * command\n");
@@ -170,7 +164,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
         }
 
         
-    // }
+    }
    
 }
 
@@ -236,11 +230,11 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
             //if requesti <= availblei
             if(request[x + 1] <= available[x]){
                 //available = available - request
-                available[x] = available[x] - request[x];
+                available[x] = available[x] - request[x+1];
                 //allocationi = allocationi + requesti
-                allocation[request[0]][x] = allocation[request[0]][x] + request[x];
+                allocation[request[0]][x] = allocation[request[0]][x] + request[x+1];
                 //needi = needi - requesti
-                need[request[0]][x] = need[request[0]][x] - request[x];
+                need[request[0]][x] = need[request[0]][x] - request[x+1];
             }
             else{
                 printf("waiting 1 ");
@@ -280,11 +274,11 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
         printf("the Resources are NOT safe!");
 
-        available[x] = available[x] + request[x];
+        available[x] = available[x] + request[x+1];
                 //allocationi = allocationi + requesti
-        allocation[request[0]][x] = allocation[request[0]][x] - request[x];
+        allocation[request[0]][x] = allocation[request[0]][x] - request[x+1];
                 //needi = needi - requesti
-        need[request[0]][x] = need[request[0]][x] + request[x];
+        need[request[0]][x] = need[request[0]][x] + request[x+1];
     }
 }
 
