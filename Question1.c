@@ -51,7 +51,7 @@ int m = 4;
 
 int readFile(char* fileName, struct CustomerRequest customerArr[]);
 void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]);
-int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
+bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m + 1]);
 void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m+1]);
 void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
@@ -263,7 +263,7 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
 
     //safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
-    safetyAlg(available,allocation,maxNeed,need);
+    bool isSafe = safetyAlg(available,allocation,maxNeed,need);
 
     //after safetyAlg
     printf("\nafter safeAlg\n");
@@ -273,7 +273,7 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     print1DArray(available, "\navailable\n");
     print1DArray(request, "\nrequest\n");
 
-    if(true){
+    if(isSafe){
 
         printf("\nthe Resources are safe!\n");
 
@@ -333,7 +333,7 @@ int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
 
 
 //checking to see if the sequence is safe
-int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
+bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
    
     int counter = n; // the amount of customers/processes
     printf("\n(339)counter is: %d\n", counter); 
