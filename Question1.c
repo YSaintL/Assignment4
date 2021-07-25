@@ -403,7 +403,7 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
             printf("\nThe current available vector is:\n");
 
             for(i=0;i<m;i++){
-                printf("\t%d\n", available[m]); //make breakpoint here
+                printf("\t%d\n", available[i]); //make breakpoint here
             }
             printf("\n");
             isSafe = true;
