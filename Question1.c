@@ -129,8 +129,12 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     int numInput = 0;
 
     while (strcmp(commandInputRequest.type,"-1") != 0) {
-        printf("\nEnter Command: (or enter -1 to stop running)");
+        printf("\nEnter Command: (or enter -1 to stop running) ");
         scanf("%s", commandInputRequest.type);
+        if (strcmp(commandInputRequest.type, "-1") == 0 ) { // If it is -1, break the loop
+            break;
+        }
+
         // scanf("%s", input);
         // strcpy(commandInputRequest.type, input);
 
@@ -158,9 +162,9 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
                 Realease(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
             }        
 
-        } else if (strcmp(commandInputRequest.type,"*") != 0 ) {
+        } else if (strcmp(commandInputRequest.type,"*") == 0 ) {
             printf("Handling * command\n");
-        } else if (strcmp(commandInputRequest.type,"Run") != 0 ) {
+        } else if (strcmp(commandInputRequest.type,"Run") == 0 ) {
             printf("Handling Run command\n");
         } else {
             printf("Please enter a valid command.");
@@ -287,6 +291,16 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
 void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m + 1]){
 
+
+    //before
+    printf("before");
+    print2DArray(maxNeed, "\nmaxNeed");
+    print2DArray(allocation, "\nallocation");
+    print2DArray(need, "\nneed");
+    print1DArray(available, "\navailable");
+    print1DArray(realease, "\nrelease");
+
+
     int x;
 
     for(x=0; x < m; x++){
@@ -300,6 +314,14 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
             printf("could not be de-allocated");
         }
     }
+
+    //after
+    printf("after");
+    print2DArray(maxNeed, "\nmaxNeed");
+    print2DArray(allocation, "\nallocation");
+    print2DArray(need, "\nneed");
+    print1DArray(available, "\navailable");
+    print1DArray(realease, "\nrelease");
 }
 
 int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
