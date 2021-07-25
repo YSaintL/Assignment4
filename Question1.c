@@ -259,7 +259,7 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     print2DArray(need, "\nneed\n");
     print1DArray(available, "\navailable\n");
     print1DArray(request, "\nrequest\n");
-    printf("pree safety");
+    printf("\npree safety\n");
 
 
     //safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
@@ -360,20 +360,25 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
                 flag = 1;
 
                 for(y=0; y < m; y++){
+                    printf("\nthe available index here is: %d\n", available[y]);
 
                     if(need[x][y] > available[y]){ //check if need is greater than available then break
+
+                        printf("\n (366) need is %d and available is %d", need[x][y], available[y]);
                         flag = 0;
                         break;
                     }
+                    printf("\nthe available index here is: %d\n", available[y]);
                 }
                 if(flag){ // if available[y] > need[x][y]
-                    printf("\n (370) Process%d is executing\n", i + 1);
+                    printf("\n (370) Process %d is executing\n", x + 1); //x was i
 
                     printf("\n (372 )finish[x] is at %d\n", finish[x]);
                     finish[x] = 0;
 
-                    printf("\n (375) The counter is now at %d\n", counter);
                     counter--;
+                    printf("\n (375) The counter is now at %d\n", counter);
+                    
                     
                     safeFlag = 1; // the proces breaks here (435)
 
@@ -398,7 +403,7 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
             printf("\nThe current available vector is:\n");
 
             for(i=0;i<m;i++){
-                printf("\t%d\n", available[m]);
+                printf("\t%d\n", available[m]); //make breakpoint here
             }
             printf("\n");
             isSafe = true;
