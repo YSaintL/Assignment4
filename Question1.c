@@ -349,10 +349,10 @@ int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
                 if(flag){ // if available[y] > need[x][y]
                     printf("\nProcess%d is executing\n", i + 1);
 
-                    printf("\nfinish[x] is at \n", finish[x]);
+                    printf("\nfinish[x] is at %d\n", finish[x]);
                     finish[x] = 0;
 
-                    printf("\ncounter is now at \n", counter);
+                    printf("\ncounter is now at %d\n", counter);
                     counter--;
                     
                     safeFlag = 1; // the proces breaks here (435)
