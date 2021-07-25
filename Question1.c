@@ -53,7 +53,7 @@ int readFile(char* fileName, struct CustomerRequest customerArr[]);
 void findNeed(int maxNeed[n][m], int allocation[n][m], int need[n][m]);
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int request[m + 1]);
-void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n);
+void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m+1]);
 void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
 void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]);
 void print2DArray(int arr[n][m], char name[500]);
@@ -153,7 +153,10 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
                 //sends to the request func
                 request(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
                 
-            }            
+            } else {
+                printf("Handling RL command\n");
+                Realease(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
+            }        
 
         } else if (strcmp(commandInputRequest.type,"*") != 0 ) {
             printf("Handling * command\n");
@@ -282,7 +285,7 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     }
 }
 
-void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m], int m, int n){
+void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m], int realease[m + 1]){
 
     int x;
 
