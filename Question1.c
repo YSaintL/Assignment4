@@ -307,71 +307,77 @@ int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
 
 //checking to see if the sequence is safe
 int safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
+   
+    int counter = n; // the amount of customers/processes
+    printf("counter is: %d", counter); 
+    int safeFlag = 0; // 0 if safe, 1 if not safe
+    int x,y,i,flag; //x,y,i just variables for the for loops below... flag is used to break lines 397 if there
+                    // is a need > avaialble
+    int finish[n]; //array of the processes
+    bool isSafe;
 
-    findNeed(maxNeed, allocation, need);
-
-    int x,y,count,flag, processFlag;
-
-    int work[m];
-
-    // this is the safe sequence character array that adds th
-    /*char safeSeqChar[n];
-
-    // this is the safe sequence counter that will increminate for every exacuted process
-    int  safeSeqCount;*/
-
-    bool isSafe = false;
-
-    int finish[n];
+    findNeed(maxNeed, allocation, need); // finding the need matrix
 
     for(x = 0; x < n; x++){
-        finish[x] = 0;
+        finish[x] = 1; //setting all processes to false( or 1)
     }
 
-    for(x = 0; x < m; x++){
-        work[x] = available[x];
-    }
+    while(counter != 0){ // while there are still processes running
 
-    count = 0;
-    while(count < n){
-        
-        for(x = 0; x < n; x++){
+        safeFlag = 0;
 
-            if(finish[x] == 0){
+        for(x=0; x < n; x++){ //used to enter 2d variables
 
-                flag = 0;
+            if(finish[x]){ // if there exists processes init with false/1
 
-                for(y = 0; y < n; y++){
+                flag = 1;
 
-                    if(need[x][y] > work[y]){
-                        flag = 1;
+                for(y=0; y < m; y++){
+
+                    if(need[x][y] > available[y]){ //check if need is greater than available then break
+                        flag = 0;
+                        break;
                     }
                 }
+                if(flag){ // if available[y] > need[x][y]
+                    printf("\nProcess%d is executing\n", i + 1);
 
-                if((finish[x] == 0) && (flag == 0)){
+                    printf("\nfinish[x] is at \n", finish[x]);
+                    finish[x] = 0;
 
-                    for(y = 0; y < n; y++){
-                        work[y] += allocation[x][y];
-                        printf("the safe sequence is [%d]", y);
-                        
-                    }
+                    printf("\ncounter is now at \n", counter);
+                    counter--;
                     
-                    finish[x] = 1;
-                    processFlag++;
-                    count++;
+                    safeFlag = 1; // the proces breaks here (435)
 
+                    for(y=0; y < m; y++){
+
+                        available[y] += allocation[x][y]; //adds the allocation[x][y] to available vector
+                        printf("\navailable vector is now: [%d]", available[y]);
+                    }
+                    break;
                 }
             }
         }
+
+        if(!safeFlag){
+            printf("not in safe state");
+            isSafe = false;
+            break;
+        }
+        else{
+            printf("safe state accomplished!");
+            printf("The current available vector is:");
+
+            for(i=0;i<m;i++){
+                printf("\t%d", available[m]);
+            }
+            printf("\n");
+            isSafe = true;
+        }
     }
-
-
-
-    if(processFlag == n){
-        isSafe = true;
-    }
-
-    return isSafe;
+//return safe?
+return isSafe;
 }
 
 
