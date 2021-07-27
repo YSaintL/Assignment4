@@ -206,19 +206,19 @@ void print1DArray(int arr[], char name[500], int length) {
 }
 
 void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]) {
-    printf("Available:      ");
+    printf("Available Resources:\n");
     print1DArray(available, "", m);
     printf("\n");
 
-    printf("Maximum:      \n");
+    printf("\nMaximum Resources:\n");
     print2DArray(maxNeed, "");
     printf("\n");
 
-    printf("Allocation:      \n");
+    printf("Allocated Resources:\n");
     print2DArray(allocation, "");
     printf("\n");
 
-    printf("Need:      \n");
+    printf("Need Resources:\n");
     print2DArray(need, "");
     printf("\n");
 }
@@ -328,8 +328,8 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
         print2DArray(maxNeed, "\nmaxNeed\n");
         print2DArray(allocation, "\nallocation\n");
         print2DArray(need, "\nneed\n");
-        print1DArray(available, "\navailable\n");
-        print1DArray(request, "\nrequest\n");
+        print1DArray(available, "\navailable\n", n);
+        print1DArray(request, "\nrequest\n", m);
         printf("\n");
         printf("the safe sequence is: ");
         for(x=0;x<n;x++){
@@ -374,7 +374,10 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 }
 
 int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
+    
+    // for(int i = 0; i < m; i++) {
 
+    // }
     //
     return 0;
 }
