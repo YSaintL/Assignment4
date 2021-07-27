@@ -61,7 +61,8 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 void commandHandler(int allocation[n][m], int need[n][m], int availableResources[m], int maxNeed[n][m]);
 void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]);
 void print2DArray(int arr[n][m], char name[500]);
-void print1DArray(int arr[], char name[500]);
+void print1DArray(int arr[], char name[500], int length);
+void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -166,8 +167,10 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
                 Realease(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
             }        
 
-        } else if (strcmp(commandInputRequest.type,"*") == 0 ) {
-            printf("Handling * command\n");
+        } else if (strcmp(commandInputRequest.type,"Status") == 0 ) {
+            printf("Handling status command\n");
+            status(availableResources, allocation, maxNeed, need);
+
         } else if (strcmp(commandInputRequest.type,"Run") == 0 ) {
             printf("Handling Run command\n");
         } else {
@@ -180,7 +183,10 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
 }
 
 void print2DArray(int arr[n][m], char name[500]) {
-    printf("\nPrinting the %s variable:\n", name);
+    if (strcmp(name, "") != 0) { // if name is empty, don't print this line
+        printf("\nPrinting the %s variable:\n", name);
+    }
+    
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
             printf("%d ", arr[i][j]);
@@ -189,11 +195,32 @@ void print2DArray(int arr[n][m], char name[500]) {
     }
 }
 
-void print1DArray(int arr[], char name[500]) {
-    printf("\nPrinting the %s variable:\n", name);
-    for(int i = 0; i < n; i++) {
+void print1DArray(int arr[], char name[500], int length) {
+    if (strcmp(name, "") != 0) { // if name is empty, don't print this line
+        printf("\nPrinting the %s variable:\n", name);
+    }
+
+    for(int i = 0; i < length; i++) {
         printf("%d ", arr[i]);
     }
+}
+
+void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]) {
+    printf("Available:      ");
+    print1DArray(available, "", m);
+    printf("\n");
+
+    printf("Maximum:      \n");
+    print2DArray(maxNeed, "");
+    printf("\n");
+
+    printf("Allocation:      \n");
+    print2DArray(allocation, "");
+    printf("\n");
+
+    printf("Need:      \n");
+    print2DArray(need, "");
+    printf("\n");
 }
 
 //finding the need matrix
@@ -230,8 +257,8 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     print2DArray(maxNeed, "\nmaxNeed\n");
     print2DArray(allocation, "\nallocation\n");
     print2DArray(need, "\nneed\n");
-    print1DArray(available, "\navailable\n");
-    print1DArray(request, "\nrequest\n");
+    print1DArray(available, "\navailable", m);
+    print1DArray(request, "\nrequest\n", n);
 
     int x;
 
@@ -262,8 +289,8 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     print2DArray(maxNeed, "\nmaxNeed\n");
     print2DArray(allocation, "\nallocation\n");
     print2DArray(need, "\nneed\n");
-    print1DArray(available, "\navailable\n");
-    print1DArray(request, "\nrequest\n");
+    print1DArray(available, "\navailable", m);
+    print1DArray(request, "\nrequest\n", n);
     printf("\npree safety\n");
 
 
@@ -275,8 +302,8 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     print2DArray(maxNeed, "\nmaxNeed\n");
     print2DArray(allocation, "\nallocation\n");
     print2DArray(need, "\nneed\n");
-    print1DArray(available, "\navailable\n");
-    print1DArray(request, "\nrequest\n");
+    print1DArray(available, "\navailable", m);
+    print1DArray(request, "\nrequest\n", n);
 
     if(isSafe){
 
@@ -319,8 +346,8 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
     print2DArray(maxNeed, "\nmaxNeed");
     print2DArray(allocation, "\nallocation");
     print2DArray(need, "\nneed");
-    print1DArray(available, "\navailable");
-    print1DArray(realease, "\nrelease");
+    print1DArray(available, "\navailable", m);
+    print1DArray(realease, "\nrelease", n);
 
 
     int x;
@@ -342,8 +369,8 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
     print2DArray(maxNeed, "\nmaxNeed");
     print2DArray(allocation, "\nallocation");
     print2DArray(need, "\nneed");
-    print1DArray(available, "\navailable");
-    print1DArray(realease, "\nrelease");
+    print1DArray(available, "\navailable", m);
+    print1DArray(realease, "\nrelease", n);
 }
 
 int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
@@ -440,8 +467,8 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
             isSafe = true;
         }
     }
-//return safe?
-return isSafe;
+    //return safe?
+    return isSafe;
 }
 
 
