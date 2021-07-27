@@ -47,6 +47,10 @@ struct CommandRequest {
 int n = 5;
 
 int m = 4;
+//int safeSequence[n]; 
+int safeSequence[5] = {};
+
+//memset(safeSequence, 0, sizeof(safeSequence[0]) * n); // used to process sequence order
 
 
 int readFile(char* fileName, struct CustomerRequest customerArr[]);
@@ -230,6 +234,7 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     print1DArray(request, "\nrequest\n");
 
     int x;
+
     //for all resources in the vector
     for(x=0; x < m; x++){
         //if requesti <= needi
@@ -282,11 +287,27 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
         printf("\nthe Resources are NOT safe!\n");
 
-        available[x] = available[x] + request[x+1];
+        for(x=0; x < m; x++){
+
+            available[x] = available[x] + request[x+1];
                 //allocationi = allocationi + requesti
-        allocation[request[0]][x] = allocation[request[0]][x] - request[x+1];
+            allocation[request[0]][x] = allocation[request[0]][x] - request[x+1];
                 //needi = needi - requesti
-        need[request[0]][x] = need[request[0]][x] + request[x+1];
+            need[request[0]][x] = need[request[0]][x] + request[x+1];
+        } 
+
+        //after deallocation
+        printf("\nafter de - allocation\n");
+        print2DArray(maxNeed, "\nmaxNeed\n");
+        print2DArray(allocation, "\nallocation\n");
+        print2DArray(need, "\nneed\n");
+        print1DArray(available, "\navailable\n");
+        print1DArray(request, "\nrequest\n");
+        printf("\n");
+        printf("the safe sequence is: ");
+        for(x=0;x<n;x++){
+            printf("P%d\t", safeSequence[x]+1);
+        }
     }
 }
 
@@ -342,11 +363,13 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
                     // is a need > avaialble
     int finish[n]; //array of the processes
     bool isSafe;
+    int seqCounter = -1; //used to process sequence order
+    int seqCount = 0; //used to process sequence order
 
     //findNeed(maxNeed, allocation, need); // finding the need matrix
 
     for(x = 0; x < n; x++){
-        finish[x] = 1; //setting all processes to false( or 1)
+        finish[x] = 0; //setting all processes to false( or 1)
     }
 
     while(counter != 0){ // while there are still processes running
@@ -355,12 +378,12 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
 
         for(x=0; x < n; x++){ //used to enter 2d variables
 
-            if(finish[x]){ // if there exists processes init with false/1
+            if(finish[x] == 0){ // if there exists processes init with false/1
 
                 flag = 1;
 
                 for(y=0; y < m; y++){
-                    printf("\nthe available index here is: %d\n", available[y]);
+                   // printf("\nthe available index here is: %d\n", available[y]);
 
                     if(need[x][y] > available[y]){ //check if need is greater than available then break
 
@@ -368,17 +391,22 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
                         flag = 0;
                         break;
                     }
-                    printf("\nthe available index here is: %d\n", available[y]);
+                   // printf("\nthe available index here is: %d\n", available[y]);
                 }
                 if(flag){ // if available[y] > need[x][y]
-                    printf("\n (370) Process %d is executing\n", x + 1); //x was i
+                   // printf("\n (370) Process %d is executing\n", x + 1); //x was i
 
-                    printf("\n (372 )finish[x] is at %d\n", finish[x]);
-                    finish[x] = 0;
+                  //  printf("\n (372 )finish[x] is at %d\n", finish[x]);
+                    finish[x] = 1;
 
                     counter--;
                     printf("\n (375) The counter is now at %d\n", counter);
-                    
+
+                    //recording the sequence
+                    seqCounter = x;
+                    safeSequence[seqCount] = seqCounter;
+                    seqCount++;
+                    ////////////////////////
                     
                     safeFlag = 1; // the proces breaks here (435)
 
@@ -390,6 +418,9 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
                     break;
                 }
             }
+            //checking safety sequence
+           // printf("\n SS process %d", n);
+
         }
 
         if(!safeFlag){
