@@ -30,6 +30,14 @@ struct CommandRequest {
     int customerAndResources[5]; // index at 0 repreesnts the customer index and the following 4 values represent the resources
 };
 
+struct argsStruct {
+    int *allocation;
+    int *need;
+    int *maxNeed;
+    int *available;
+    int customerNum;
+};
+
 /* RQ - take a request
       - check if the request will result in a safe state
       - if safe = update the allocation of matrix to allocate resources
@@ -63,6 +71,8 @@ void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n
 void print2DArray(int arr[n][m], char name[500]);
 void print1DArray(int arr[], char name[500], int length);
 void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
+int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
+void *threadRun(void *arguments);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -96,7 +106,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < customerCount; i++) {
         for (int j = 0; j < (sizeof(availableResources) / sizeof(int)); j++) {
             if (j > 0) {
-                printf(",");
+                printf(" ");
             }
             printf("%d", customerArr[i].resources[j]);
         }
@@ -132,6 +142,19 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     // int commandInputRequest[5] = {};
     char input[200];
     int numInput = 0;
+    int rqCounter = 0;             // Remove this after( this is for testing purposes)
+    // Remove this after( this is for testing purposes)
+    int rq1[5][5] = {
+        {0, 1, 0, 0, 1},
+        {1, 1, 1, 1, 1},
+        {2, 2, 2, 2, 2},
+        {3, 1, 1, 1, 1},
+        {4, 1, 0, 0, 0}
+    };
+    // int rq2[5] = {1, 1, 1, 1, 1};
+    // int rq3[5] = {2, 2, 2, 2, 2};
+    // int rq4[5] = {3, 1, 1, 1, 1};
+    // int rq5[5] = {4, 1, 0, 0, 0};
 
     while (strcmp(commandInputRequest.type,"-1") != 0) {
         printf("\nEnter Command: (or enter -1 to stop running) ");
@@ -144,16 +167,21 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
         // strcpy(commandInputRequest.type, input);
 
         if (strcmp(commandInputRequest.type,"RQ") == 0 || strcmp(commandInputRequest.type, "RL") == 0) {
-            for(int i = 0; i < numResources + 1; i++){
-                // commandInputRequest.customerAndResources[i] = 0;
-                scanf("%s", input);
-                // scanf("%d", numInput);
 
-                // scanf("%s", input);
-                commandInputRequest.customerAndResources[i] = atoi(input);
-                // commandInputRequest.customerAndResources[i] = numInput;
+            // Remove this after( this is for testing purposes)
+            memcpy(commandInputRequest.customerAndResources, rq1[rqCounter], sizeof(commandInputRequest.customerAndResources));
+            rqCounter++;
+
+            // for(int i = 0; i < numResources + 1; i++){
+            //     // commandInputRequest.customerAndResources[i] = 0;
+            //     scanf("%s", input);
+            //     // scanf("%d", numInput);
+
+            //     // scanf("%s", input);
+            //     commandInputRequest.customerAndResources[i] = atoi(input);
+            //     // commandInputRequest.customerAndResources[i] = numInput;
                 
-            }
+            // }
             printf("Handling RQ or RL command\n");
 
             if (strcmp(commandInputRequest.type,"RQ") == 0) {
@@ -173,8 +201,10 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
 
         } else if (strcmp(commandInputRequest.type,"Run") == 0 ) {
             printf("Handling Run command\n");
+
+            run(availableResources, allocation, maxNeed, need);
         } else {
-            printf("Please enter a valid command.");
+            printf("Please enter a valid command (RQ, RL, Status, or Run).\n");
         }
 
         
@@ -373,13 +403,67 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
     print1DArray(realease, "\nrelease", n);
 }
 
-int Run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
-    
-    // for(int i = 0; i < m; i++) {
+int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]){
+    // int customerNum;
 
-    // }
+    // Create args to pass in the thread run function
+    struct argsStruct args;
+    args.allocation = &allocation;
+    args.need = &need;
+    args.maxNeed = &maxNeed;
+    args.available = &available;
+    
+    pthread_t t1;
+    pthread_t t2;
+    pthread_t t3;
+    pthread_t t4;
+    pthread_t t5;
+
+    for(int i = 0; i < n; i++) {
+        // customerNum = safeSequence[i];
+        args.customerNum = safeSequence[i];
+        if(i = 0) {
+            pthread_create(&t1, NULL, &threadRun, (void *)&args);
+            pthread_join(t1, NULL);
+        } else if(i = 1) {
+            pthread_create(&t2, NULL, &threadRun, (void *)&args);
+            pthread_join(t2, NULL);
+        } else if(i = 2) {
+            pthread_create(&t3, NULL, &threadRun, (void *)&args);
+            pthread_join(t3, NULL);
+        } else if(i = 3) {
+            pthread_create(&t4, NULL, &threadRun, (void *)&args);
+            pthread_join(t4, NULL);
+        } else if(i = 4) {
+            pthread_create(&t5, NULL, &threadRun, (void *)&args);
+            pthread_join(t5, NULL);
+        }
+    }
     //
     return 0;
+}
+
+void *threadRun(void *arguments) {
+    int sum = 0;
+    struct argsStruct *args = arguments;
+
+    printf("--> Customer / Thread %d\n", args->customerNum);
+    printf("    Allocated resources: ");
+    print1DArray(args->allocation[args->customerNum], "", m);
+
+    printf("     Needed: ");
+    print1DArray(args->need[args->customerNum], "", m);
+
+    printf("     Available: ");
+    print1DArray(args->available, "", m);
+
+    printf("     Thread has started\n");
+    printf("     Thread has finished\n");
+    printf("     Thread is releasing resources\n");
+    printf("     New Availible: put a value here \n");
+    
+    
+    return NULL;
 }
 
 
