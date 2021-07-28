@@ -206,7 +206,8 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             printf("Handling Run command\n");
 
             calculateSafeSequence(availableResources, allocation, maxNeed, need);
-            run(availableResources, allocation, maxNeed, need);
+            print1DArray(doneCustomers, "Done Customer", 5);
+            // run(availableResources, allocation, maxNeed, need);
         } else {
             printf("Please enter a valid command (RQ, RL, Status, or Run).\n");
         }
@@ -386,18 +387,28 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
 
 
     int x;
+    bool canDeallocate = true;
 
     for(x=0; x < m; x++){
-
-        if(realease[x + 1] == allocation[realease[0]][x]){
-            
-            allocation[realease[0]][x] -= allocation[realease[0]][x];
-        }
-
-        else{
-            printf("could not be de-allocated");
+        if(realease[x + 1] > allocation[realease[0]][x]){
+            printf("Could not be de-allocated\n");
+            canDeallocate = false;
         }
     }
+
+    if (canDeallocate) {
+        for(x=0; x < m; x++){
+            if(realease[x + 1] <= allocation[realease[0]][x]){
+                allocation[realease[0]][x] -= realease[x+1];
+                available[x] += realease[x+1];
+            }
+
+            else{
+                printf("could not be de-allocated");
+            }
+        }
+    }
+    
 
     //after
     printf("after");
@@ -588,9 +599,9 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
     int releaseArr[m+1];
 
 
-    while (sequenceIndex < n-1) {
+    while (sequenceIndex < n) {
         for(int i = 0; i < n; i++) {
-            // status();
+            status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
 
             canRun = true;
 
@@ -616,9 +627,9 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
                     releaseArr[k+1] = tempAllocation[i][k];
                 }
                 Realease(tempAvailable, tempAllocation, tempMaxNeed, tempNeed, releaseArr);
-                // status();
+                status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
                 int hello = 5;
-                break;
+                continue;
 
             }
         }
