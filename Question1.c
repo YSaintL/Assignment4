@@ -20,6 +20,7 @@
 
 
 int numResources = 4;
+int doneCustomers[5] = {-1, -1, -1, -1, -1};
 
 struct CustomerRequest {
     int resources[4];
@@ -73,6 +74,8 @@ void print1DArray(int arr[], char name[500], int length);
 void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 void *threadRun(void *arguments);
+void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
+int searchArr(int arr[], int num);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -202,6 +205,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
         } else if (strcmp(commandInputRequest.type,"Run") == 0 ) {
             printf("Handling Run command\n");
 
+            calculateSafeSequence(availableResources, allocation, maxNeed, need);
             run(availableResources, allocation, maxNeed, need);
         } else {
             printf("Please enter a valid command (RQ, RL, Status, or Run).\n");
@@ -461,6 +465,12 @@ void *threadRun(void *arguments) {
     printf("     Thread has started\n");
     printf("     Thread has finished\n");
     printf("     Thread is releasing resources\n");
+    // Need to put allocated amount into an array and then call release to release the allocation for the customer/thread to deallocate resource
+
+    // releaseArr = {1, 1, 1, 1, 1}
+    // RL 1 1 1 1 1 --> release()
+
+
     printf("     New Availible: put a value here \n");
     
     
@@ -557,6 +567,75 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
     }
     //return safe?
     return isSafe;
+}
+
+void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]) {
+    bool canRun;
+    int sequenceIndex = 0;
+
+    int tempAvailable[m];
+    int tempAllocation[n][m];
+    int tempNeed[n][m];
+    int tempMaxNeed[n][m];
+
+    memcpy(tempAvailable, available, sizeof (int) * n * m);
+    memcpy(tempAllocation, allocation, sizeof (int) * n * m);
+    memcpy(tempNeed, need, sizeof (int) * n * m);
+    memcpy(tempMaxNeed, maxNeed, sizeof (int) * n * m);
+
+    int releaseArr[m+1];
+
+
+    while (sequenceIndex < n-1) {
+        for(int i = 0; i < n; i++) {
+            // status();
+
+            canRun = true;
+
+            if (searchArr(doneCustomers, i) == 1) {
+                continue;
+            }
+
+            for(int j = 0; j < m; j++) {
+                if (tempNeed[i][j] > tempAvailable[j]) {
+                    canRun = false;
+                    break;
+                }
+            }
+
+            if (canRun) {
+                // safeSequence[sequenceIndex] = i;
+                doneCustomers[sequenceIndex] = i;
+                sequenceIndex++;
+
+                releaseArr[0] = i;
+
+                for(int k = 0; k < m; k++) {
+                    releaseArr[k+1] = tempAllocation[i][k];
+                }
+                Realease(tempAvailable, tempAllocation, tempMaxNeed, tempNeed, releaseArr);
+                // status();
+                int hello = 5;
+                break;
+
+            }
+        }
+    }
+    
+    int a = 5;
+}
+
+int searchArr(int arr[], int num) {
+    for(int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+    {
+        if(arr[i] == num) // checks if it is equal
+            return 1;
+    }
+
+
+
+
+    return 0;
 }
 
 
