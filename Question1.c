@@ -495,20 +495,20 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
 
             if(finish[x] == 0){ // if there exists processes init with false/1
 
-                flag = 1;
+                flag = 0;
 
                 for(y=0; y < m; y++){
                    // printf("\nthe available index here is: %d\n", available[y]);
 
-                    if(need[x][y] > available[y]){ //check if need is greater than available then break
+                    if(need[x][y] <= available[y]){ //check if need is greater than available then break
 
                         printf("\n (366) need is %d and available is %d", need[x][y], available[y]);
-                        flag = 0;
+                        flag = 1;
                         break;
                     }
                    // printf("\nthe available index here is: %d\n", available[y]);
                 }
-                if(flag){ // if available[y] > need[x][y]
+                if(flag == 1){ // if available[y] > need[x][y]
                    // printf("\n (370) Process %d is executing\n", x + 1); //x was i
 
                   //  printf("\n (372 )finish[x] is at %d\n", finish[x]);
