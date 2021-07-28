@@ -467,6 +467,8 @@ void *threadRun(void *arguments) {
     printf("     Thread is releasing resources\n");
     // Need to put allocated amount into an array and then call release to release the allocation for the customer/thread to deallocate resource
 
+    // You want to deallocate the resources since we will be done
+
     // releaseArr = {1, 1, 1, 1, 1}
     // RL 1 1 1 1 1 --> release()
 
