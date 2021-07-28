@@ -338,6 +338,7 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
     if(isSafe){
 
         printf("\nthe Resources are safe!\n");
+        //available[y] -= allocation[x][y];
 
     }
     else{
@@ -524,11 +525,11 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
                     
                     safeFlag = 1; // the proces breaks here (435)
 
-                    for(y=0; y < m; y++){
+                    // for(y=0; y < m; y++){
 
-                        available[y] += allocation[x][y]; //adds the allocation[x][y] to available vector
-                        printf("\n (383) The available vector is now: [%d]", available[y]);
-                    }
+                    //     available[y] += allocation[x][y]; //adds the allocation[x][y] to available vector
+                    //     printf("\n (383) The available vector is now: [%d]", available[y]);
+                    // }
                     break;
                 }
             }
