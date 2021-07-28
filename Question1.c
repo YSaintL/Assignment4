@@ -207,7 +207,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
 
             calculateSafeSequence(availableResources, allocation, maxNeed, need);
             print1DArray(doneCustomers, "Done Customer", 5);
-            // run(availableResources, allocation, maxNeed, need);
+            //run(availableResources, allocation, maxNeed, need);
         } else {
             printf("Please enter a valid command (RQ, RL, Status, or Run).\n");
         }
@@ -404,7 +404,7 @@ void Realease(int available[m], int allocation[n][m], int maxNeed[n][m], int nee
             }
 
             else{
-                printf("could not be de-allocated");
+                printf("could not be de-allocated\n");
             }
         }
     }
@@ -437,7 +437,7 @@ int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
 
     for(int i = 0; i < n; i++) {
         // customerNum = safeSequence[i];
-        args.customerNum = safeSequence[i];
+        args.customerNum = doneCustomers[i];
         if(i = 0) {
             pthread_create(&t1, NULL, &threadRun, (void *)&args);
             pthread_join(t1, NULL);
@@ -478,14 +478,23 @@ void *threadRun(void *arguments) {
     printf("     Thread is releasing resources\n");
     // Need to put allocated amount into an array and then call release to release the allocation for the customer/thread to deallocate resource
 
+    int  x;
+    int releaseArr[m + 1];
+    releaseArr[0] = args->customerNum;
+
+    for(x=0; x < m; x++){
+        releaseArr[x+1] = args->allocation[args->customerNum][x];
+    } 
+
+    Realease(args->available, args->allocation, args->maxNeed, args->need, releaseArr);
+
     // You want to deallocate the resources since we will be done
 
     // releaseArr = {1, 1, 1, 1, 1}
     // RL 1 1 1 1 1 --> release()
 
-
-    printf("     New Availible: put a value here \n");
-    
+    printf("     New Availible: \n");
+    print1DArray(args->available, "", m);
     
     return NULL;
 }
@@ -600,7 +609,7 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
 
 
     while (sequenceIndex < n) {
-        for(int i = 0; i < n; i++) {
+        for(int i = 0; i < n; i++) { //
             status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
 
             canRun = true;
@@ -621,15 +630,17 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
                 doneCustomers[sequenceIndex] = i;
                 sequenceIndex++;
 
-                releaseArr[0] = i;
+                releaseArr[0] = i; //
 
-                for(int k = 0; k < m; k++) {
+                for(int k = 0; k < m; k++) { //
                     releaseArr[k+1] = tempAllocation[i][k];
                 }
                 Realease(tempAvailable, tempAllocation, tempMaxNeed, tempNeed, releaseArr);
                 status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
                 int hello = 5;
                 continue;
+
+                // 0 1 1 1 1
 
             }
         }
@@ -644,10 +655,6 @@ int searchArr(int arr[], int num) {
         if(arr[i] == num) // checks if it is equal
             return 1;
     }
-
-
-
-
     return 0;
 }
 
