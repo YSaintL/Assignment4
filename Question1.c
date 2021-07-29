@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
         available[i] = atoi(argv[i+1]); 
     }
     if (availableResources > 0) {
-        printf("Number of Customers: %lu\n", (sizeof(availableResources) / sizeof(int)));\
+        printf("Number of Customers: %d\n", n);
         printf("Currently Available resources: ");
         for(int i = 0; i < (sizeof(availableResources) / sizeof(int)); i++){
             printf("%d ", availableResources[i]);
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 
     int customerCount = readFile(fileNamePtr, customerArr);
 
-    printf("Maximum resources from file\n");
+    printf("Maximum resources from file:\n");
 
     for (int i = 0; i < customerCount; i++) {
         for (int j = 0; j < (sizeof(availableResources) / sizeof(int)); j++) {
@@ -164,7 +164,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     // int rq5[5] = {4, 1, 0, 0, 0};
 
     while (strcmp(commandInputRequest.type,"-1") != 0) {
-        printf("\nEnter Command: (or enter -1 to stop running) ");
+        printf("Enter Command: (or enter -1 to stop running) ");
         scanf("%s", commandInputRequest.type);
         if (strcmp(commandInputRequest.type, "-1") == 0 ) { // If it is -1, break the loop
             break;
@@ -205,7 +205,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             }        
 
         } else if (strcmp(commandInputRequest.type,"Status") == 0 ) {
-            printf("Handling status command\n");
+            //printf("Handling status command\n");
            // status(availableResources, allocation, maxNeed, need);
             status(available, allocation, maxNeed, need); //
 
@@ -213,16 +213,14 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             // printf("Handling Run command\n");
 
             calculateSafeSequence(availableResources, allocation, maxNeed, need); //
-            print1DArray(doneCustomers, "Done Customer", 5);
+            printf("the safe sequence is: ");
+            print1DArray(doneCustomers, "", 5);
            // run(availableResources, allocation, maxNeed, need);
             run(available, allocation, maxNeed, need);//
         } else {
             printf("Please enter a valid command (RQ, RL, Status, or Run).\n");
         }
-
-        
     }
-   
 }
 
 void print2DArray(int arr[n][m], char name[500]) {
@@ -253,17 +251,17 @@ void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[
     print1DArray(available, "", m);
     printf("\n");
 
-    printf("\nMaximum Resources:\n");
+    printf("Maximum Resources:\n");
     print2DArray(maxNeed, "");
-    printf("\n");
+    //printf("\n");
 
     printf("Allocated Resources:\n");
     print2DArray(allocation, "");
-    printf("\n");
+    //printf("\n");
 
     printf("Need Resources:\n");
     print2DArray(need, "");
-    printf("\n");
+    //printf("\n");
 }
 
 //finding the need matrix
@@ -353,13 +351,13 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
 
     if(isSafe){
 
-        printf("\n<The Resources are [SAFE]>\n");
+        printf("State is safe, and request is satisfied\n");
         //available[y] -= allocation[x][y];
 
     }
     else{
         //de-allocation
-        printf("\n<LINE 359 The Resources are [NOT SAFE]>\n");
+        printf("State is not safe, and request is not satisfied\n");
 
         for(x=0; x < m; x++){
                 //available = available + request
@@ -371,18 +369,18 @@ void request(int available[m], int allocation[n][m], int maxNeed[n][m], int need
         } 
 
         //after deallocation
-        printf("\n After [DE-ALLOCATION]\n");
-        printf("\n"); //space to be clean
-        print2DArray(maxNeed, "\nmaxNeed\n");
-        print2DArray(allocation, "\nallocation\n");
-        print2DArray(need, "\nneed\n");
-        print1DArray(available, "\navailable\n", n);
-        print1DArray(request, "\nrequest\n", m);
-        printf("\n");
-        printf("\n The safe sequence is: ");
-        for(x=0;x<n;x++){
-            printf("P%d\t", safeSequence[x]+1);
-        }
+        // printf("\n After [DE-ALLOCATION]\n");
+        // printf("\n"); //space to be clean
+        // print2DArray(maxNeed, "\nmaxNeed\n");
+        // print2DArray(allocation, "\nallocation\n");
+        // print2DArray(need, "\nneed\n");
+        // print1DArray(available, "\navailable\n", n);
+        // print1DArray(request, "\nrequest\n", m);
+        // printf("\n");
+        //printf("\n The safe sequence is: ");
+        // for(x=0;x<n;x++){
+        //     printf("P%d\t", safeSequence[x]+1);
+        // }
     }
 }
 
@@ -478,22 +476,22 @@ void *threadRun(void *arguments) {
     int sum = 0;
     struct argsStruct *args = arguments;
 
-    printf("--> Customer / Thread %d\n", args->customerNum);
+    printf("\n--> Customer/Thread %d\n", args->customerNum);
     printf("    Allocated resources: ");
     //print1DArray(args->allocation[args->customerNum], "", m);
     print1DArray(allocation[args->customerNum], "", m);
 
-    printf("     Needed: ");
+    printf("\n    Needed: ");
     //print1DArray(args->need[args->customerNum], "", m);
     print1DArray(need[args->customerNum], "", m);
 
-    printf("     Available: ");
+    printf("\n    Available: ");
     //print1DArray(args->available, "", m);
     print1DArray(available, "", m);
 
-    printf("     Thread has started\n");
-    printf("     Thread has finished\n");
-    printf("     Thread is releasing resources\n");
+    printf("\n    Thread has started\n");
+    printf("    Thread has finished\n");
+    printf("    Thread is releasing resources\n");
     // Need to put allocated amount into an array and then call release to release the allocation for the customer/thread to deallocate resource
 
     int  x;
@@ -513,7 +511,7 @@ void *threadRun(void *arguments) {
     // releaseArr = {1, 1, 1, 1, 1}
     // RL 1 1 1 1 1 --> release()
 
-    printf("     New Availible: \n");
+    printf("    New Availible: ");
     //print1DArray(args->available, "", m);
     print1DArray(available, "", m);
     
@@ -635,7 +633,7 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
 
     while (sequenceIndex < n) {
         for(int i = 0; i < n; i++) { //
-            status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
+           // status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
 
             canRun = true;
 
@@ -661,7 +659,7 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
                     releaseArr[k+1] = tempAllocation[i][k];
                 }
                 Realease(tempAvailable, tempAllocation, tempMaxNeed, tempNeed, releaseArr);
-                status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
+                //status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
                 int hello = 5;
                 continue;
 
