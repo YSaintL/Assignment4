@@ -149,15 +149,15 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     // int commandInputRequest[5] = {};
     char input[200];
     int numInput = 0;
-    int rqCounter = 0;             // Remove this after( this is for testing purposes)
+    // int rqCounter = 0;             // Remove this after( this is for testing purposes)
     // Remove this after( this is for testing purposes)
-    int rq1[5][5] = {
-        {0, 1, 0, 0, 1},
-        {1, 1, 1, 1, 1},
-        {2, 2, 2, 2, 2},
-        {3, 1, 1, 1, 1},
-        {4, 1, 0, 0, 0}
-    };
+    // int rq1[5][5] = {
+    //     {0, 1, 0, 0, 1},
+    //     {1, 1, 1, 1, 1},
+    //     {2, 2, 2, 2, 2},
+    //     {3, 1, 1, 1, 1},
+    //     {4, 1, 0, 0, 0}
+    // };
     // int rq2[5] = {1, 1, 1, 1, 1};
     // int rq3[5] = {2, 2, 2, 2, 2};
     // int rq4[5] = {3, 1, 1, 1, 1};
@@ -176,19 +176,19 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
         if (strcmp(commandInputRequest.type,"RQ") == 0 || strcmp(commandInputRequest.type, "RL") == 0) {
 
             // Remove this after( this is for testing purposes)
-            memcpy(commandInputRequest.customerAndResources, rq1[rqCounter], sizeof(commandInputRequest.customerAndResources));
-            rqCounter++;
+            // memcpy(commandInputRequest.customerAndResources, rq1[rqCounter], sizeof(commandInputRequest.customerAndResources));
+            // rqCounter++;
 
-            // for(int i = 0; i < numResources + 1; i++){
-            //     // commandInputRequest.customerAndResources[i] = 0;
-            //     scanf("%s", input);
-            //     // scanf("%d", numInput);
+            for(int i = 0; i < numResources + 1; i++){
+                // commandInputRequest.customerAndResources[i] = 0;
+                scanf("%s", input);
+                // scanf("%d", numInput);
 
-            //     // scanf("%s", input);
-            //     commandInputRequest.customerAndResources[i] = atoi(input);
-            //     // commandInputRequest.customerAndResources[i] = numInput;
+                // scanf("%s", input);
+                commandInputRequest.customerAndResources[i] = atoi(input);
+                // commandInputRequest.customerAndResources[i] = numInput;
                 
-            // }
+            }
             // printf("Handling RQ or RL command\n");
 
             if (strcmp(commandInputRequest.type,"RQ") == 0) {
@@ -514,6 +514,7 @@ void *threadRun(void *arguments) {
     printf("    New Availible: ");
     //print1DArray(args->available, "", m);
     print1DArray(available, "", m);
+    printf("\n");
     
     return NULL;
 }
