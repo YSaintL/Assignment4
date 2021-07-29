@@ -189,17 +189,17 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             //     // commandInputRequest.customerAndResources[i] = numInput;
                 
             // }
-            printf("Handling RQ or RL command\n");
+            // printf("Handling RQ or RL command\n");
 
             if (strcmp(commandInputRequest.type,"RQ") == 0) {
-                printf("Handling RQ command\n");
+                // printf("Handling RQ command\n");
                 findNeed(maxNeed, allocation, need);
                 //sends to the request func
                // request(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
                 request(available, allocation, maxNeed, need, commandInputRequest.customerAndResources); //
                 
             } else {
-                printf("Handling RL command\n");
+                // printf("Handling RL command\n");
                // Realease(availableResources, allocation, maxNeed, need, commandInputRequest.customerAndResources);
                 Realease(available, allocation, maxNeed, need, commandInputRequest.customerAndResources); //
             }        
@@ -210,7 +210,7 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             status(available, allocation, maxNeed, need); //
 
         } else if (strcmp(commandInputRequest.type,"Run") == 0 ) {
-            printf("Handling Run command\n");
+            // printf("Handling Run command\n");
 
             calculateSafeSequence(availableResources, allocation, maxNeed, need); //
             print1DArray(doneCustomers, "Done Customer", 5);
