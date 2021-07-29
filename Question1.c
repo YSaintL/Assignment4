@@ -436,11 +436,11 @@ int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
     // int customerNum;
 
     // Create args to pass in the thread run function
-    struct argsStruct args;
-    args.allocation = &allocation;
-    args.need = &need;
-    args.maxNeed = &maxNeed;
-    args.available = &available;
+     struct argsStruct args;
+    // args.allocation = &allocation;
+    // args.need = &need;
+    // args.maxNeed = &maxNeed;
+    // args.available = &available;
     
     pthread_t t1;
     pthread_t t2;
@@ -673,7 +673,7 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
 }
 
 int searchArr(int arr[], int num) {
-    for(int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+    for(int i = 0; i < (int) sizeof(arr) / sizeof(arr[0]); i++)
     {
         if(arr[i] == num) // checks if it is equal
             return 1;
