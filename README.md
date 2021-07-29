@@ -40,20 +40,30 @@ In our test, once we called the "make runq1",
 We tested using these commands:
 
 RQ 0 1 0 0 1
+
 RQ 1 1 1 1 1
+
 RQ 2 2 2 2 2
+
 RQ 3 1 1 1 1
+
 RQ 4 1 0 0 0
+
 Status
+
 Run
+
 Status
 
 After using these commands, the program worked as intended.
 To test the release command, we used these commands:
 
 RQ 0 1 0 0 1
+
 Status
+
 RL 0 1 0 0 1
+
 Status
 
 The program worked as intended.
