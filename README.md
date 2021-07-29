@@ -33,16 +33,37 @@ The RL command can also be called to release resources after they have been requ
 The status command allows you to view the current values in the need, maxNeed, available, and allocation arrays.
 
 # Test cases
+In our test, once we called the "make runq1",
+We tested using these commands:
 
+RQ 0 1 0 0 1
+RQ 1 1 1 1 1
+RQ 2 2 2 2 2
+RQ 3 1 1 1 1
+RQ 4 1 0 0 0
+Status
+Run
+Status
+
+After using these commands, the program worked as intended.
+To test the release command, we used these commands:
+
+RQ 0 1 0 0 1
+Status
+RL 0 1 0 0 1
+Status
+
+The program worked as intended.
 
 # Use examples
-An example of how to use the program is once you call the make...
+To run this program, open a terminal/command line in this folder. Type "make" into the terminal to compile the code using the Makefile. 
+Afterwards, call "make runq1" to get the program running with default available resource values of 10 5 7 8. To use custom values, instead of calling "make runq1" call "./Question1 10 5 7 8". Your own 4 integers can be used as desired.
 
 # About Developers
 Alex Do and Daniel Faseyi are student developers currently majoring in Computer Science. They collaborated to create this program together.
 
 # Credits
-Big thank you to Dr. Sukhjit Singh Sehra for helping us in the the debugging process and guiding us in learning this concept and creating this program.
+Big thank you to Dr. Sukhjit Singh Sehra for helping us in the the debugging process and guiding us in learning these concepts and creating this program.
 
 # License to use your code
 If using this code, please provide us credit.
