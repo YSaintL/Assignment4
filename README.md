@@ -1,5 +1,3 @@
-# Assignment4
-
 # Project Title: 
 Bankers Algorithm in C
 
@@ -19,8 +17,9 @@ To use this program, you need a Linux environment.
 # Screenshots
 
 # Individual Contribution
-Alex Do was responsible for: general program creation, debugging this program, handling inputs, revising initial logic of program
-Daniel Faseyi was responsible for: general program creation, debugging this program, coming up with initial logic for this program
+Alex Do was responsible for: general program creation, debugging this program, handling inputs, revising initial logic of program.
+
+Daniel Faseyi was responsible for: general program creation, debugging this program, coming up with initial logic for this program.
 
 The two developers collaboated on this project and much of the work was intertwined.
 
@@ -43,7 +42,7 @@ An example of how to use the program is once you call the make...
 Alex Do and Daniel Faseyi are student developers currently majoring in Computer Science. They collaborated to create this program together.
 
 # Credits
-Big thank you to Dr. Sukhjit Singh Sehra for helping us part of the debugging process and guiding us in learning and creating this program.
+Big thank you to Dr. Sukhjit Singh Sehra for helping us in the the debugging process and guiding us in learning this concept and creating this program.
 
 # License to use your code
 If using this code, please provide us credit.
