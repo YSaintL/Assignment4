@@ -453,19 +453,19 @@ int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
     for(int i = 0; i < n; i++) {
         // customerNum = safeSequence[i];
         args.customerNum = doneCustomers[i];
-        if(i = 0) {
+        if(i == 0) {
             pthread_create(&t1, NULL, &threadRun, (void *)&args);
             pthread_join(t1, NULL);
-        } else if(i = 1) {
+        } else if(i == 1) {
             pthread_create(&t2, NULL, &threadRun, (void *)&args);
             pthread_join(t2, NULL);
-        } else if(i = 2) {
+        } else if(i == 2) {
             pthread_create(&t3, NULL, &threadRun, (void *)&args);
             pthread_join(t3, NULL);
-        } else if(i = 3) {
+        } else if(i == 3) {
             pthread_create(&t4, NULL, &threadRun, (void *)&args);
             pthread_join(t4, NULL);
-        } else if(i = 4) {
+        } else if(i == 4) {
             pthread_create(&t5, NULL, &threadRun, (void *)&args);
             pthread_join(t5, NULL);
         }
