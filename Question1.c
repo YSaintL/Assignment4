@@ -5,8 +5,6 @@
  Email:   Fase0640@mylaurier.ca and doxx1080@mylaurier.ca
  ----------------------------------
  */
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -78,7 +76,7 @@ void status(int available[m], int allocation[n][m], int maxNeed[n][m], int need[
 int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
 void *threadRun(void *arguments);
 void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m]);
-int searchArr(int arr[], int num);
+int searchArr(int arr[], int num, int size);
 
 int main(int argc, char *argv[]) {
     // Store ints from argv into an int array
@@ -131,8 +129,6 @@ int main(int argc, char *argv[]) {
 
     commandHandler(allocation, need, available,maxNeed);
 
-    int hello = 5;
-
 }
 
 void constructMaxNeedMatrix(struct CustomerRequest customerArr[n], int maxNeed[n][m]) {
@@ -148,7 +144,6 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
     // commandInputRequest.type = '';
     // int commandInputRequest[5] = {};
     char input[200];
-    int numInput = 0;
     // int rqCounter = 0;             // Remove this after( this is for testing purposes)
     // Remove this after( this is for testing purposes)
     // int rq1[5][5] = {
@@ -182,12 +177,9 @@ void commandHandler(int allocation[n][m], int need[n][m], int availableResources
             for(int i = 0; i < numResources + 1; i++){
                 // commandInputRequest.customerAndResources[i] = 0;
                 scanf("%s", input);
-                // scanf("%d", numInput);
 
                 // scanf("%s", input);
-                commandInputRequest.customerAndResources[i] = atoi(input);
-                // commandInputRequest.customerAndResources[i] = numInput;
-                
+                commandInputRequest.customerAndResources[i] = atoi(input);                
             }
             // printf("Handling RQ or RL command\n");
 
@@ -473,7 +465,6 @@ int run(int available[m], int allocation[n][m], int maxNeed[n][m], int need[n][m
 }
 
 void *threadRun(void *arguments) {
-    int sum = 0;
     struct argsStruct *args = arguments;
 
     printf("\n--> Customer/Thread %d\n", args->customerNum);
@@ -526,7 +517,7 @@ bool safetyAlg(int available[m], int allocation[n][m], int maxNeed[n][m], int ne
     int counter = n; // the amount of customers/processes
     //printf("\n(339)counter is: %d\n", counter); 
     int safeFlag = 0; // 0 if safe, 1 if not safe
-    int x,y,i,flag; /*x,y,i just variables for the for loops below... flag is used to break lines 397 if there
+    int x,y,flag; /*x,y,i just variables for the for loops below... flag is used to break lines 397 if there
                       is a need > avaialble*/
 
     int finish[n]; //array of the processes
@@ -638,7 +629,7 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
 
             canRun = true;
 
-            if (searchArr(doneCustomers, i) == 1) {
+            if (searchArr(doneCustomers, i, n) == 1) {
                 continue;
             }
 
@@ -661,7 +652,6 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
                 }
                 Realease(tempAvailable, tempAllocation, tempMaxNeed, tempNeed, releaseArr);
                 //status(tempAvailable, tempAllocation, tempMaxNeed, tempNeed);
-                int hello = 5;
                 continue;
 
                 // 0 1 1 1 1
@@ -670,11 +660,10 @@ void calculateSafeSequence(int available[m], int allocation[n][m], int maxNeed[n
         }
     }
     
-    int a = 5;
 }
 
-int searchArr(int arr[], int num) {
-    for(int i = 0; i < (int) sizeof(arr) / sizeof(arr[0]); i++)
+int searchArr(int arr[], int num, int size) {
+    for(int i = 0; i < size; i++)
     {
         if(arr[i] == num) // checks if it is equal
             return 1;
