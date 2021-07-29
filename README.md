@@ -15,6 +15,9 @@ need - 2D array of 5 rows by 4 columns: the remaining needed resources for each 
 To use this program, you need a Linux environment.
 
 # Screenshots
+![alt text](https://i.imgur.com/bSvIb19.png)
+![alt text](https://i.imgur.com/dnSDKRd.png)
+![alt text](https://i.imgur.com/qWTed6g.png)
 
 # Individual Contribution
 Alex Do was responsible for: general program creation, debugging this program, handling inputs, revising initial logic of program.
